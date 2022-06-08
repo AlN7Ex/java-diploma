@@ -20,12 +20,10 @@ public class Main {
         linksSuggester.check();
 
         int count = 0;
-//        List<Suggest> linkSuggest = linksSuggester.suggest("класс");
         var dir = new File("data/pdfs");
         String[] list = dir.list();
 
         if (list != null) {
-//            Set<String> keyWordSet = new HashSet<>();
 
             // перебираем пдфки в data/pdfs
 
@@ -38,13 +36,16 @@ public class Main {
                 int numberOfPages = doc.getNumberOfPages();
 
                 // перебираем страницы pdf
-//                while (doc.)
+
                 for (int i = 1; i <= numberOfPages; ++i) {
                     String textFromPage = PdfTextExtractor.getTextFromPage(doc.getPage(i));
 
                     // если в странице есть неиспользованные ключевые слова, создаём новую страницу за ней
 
                     List<Suggest> suggest = linksSuggester.suggest(textFromPage);
+                    if (suggest.isEmpty()) {
+                        continue;
+                    }
                     var newPage = doc.addNewPage(++i);
                     numberOfPages++;
                     var rect = new Rectangle(newPage.getPageSize()).moveRight(10).moveDown(10);
